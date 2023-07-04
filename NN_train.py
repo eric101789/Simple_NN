@@ -59,7 +59,7 @@ history = NN_model.fit(X_train,
                        validation_data=(X_val, y_val),
                        validation_steps=525 // batch_size)
 
-NN_model.save('Simple_NN/model/train_model_epoch100')
+NN_model.save('model/train_model_epoch100')
 
 # Plot training and validation loss over epochs
 plt.plot(history.history['loss'], label='training_loss')
@@ -67,8 +67,8 @@ plt.plot(history.history['val_loss'], label='validation_loss')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()
-plt.savefig('Simple_NN/result/train/Loss_epoch100.png')
-plt.show()
+plt.savefig('result/train/Loss_epoch100.png')
+# plt.show()
 
 # Plot training and validation accuracy over epochs
 plt.plot(history.history['accuracy'], label='training_accuracy')
@@ -76,8 +76,8 @@ plt.plot(history.history['val_accuracy'], label='validation_accuracy')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
-plt.savefig('Simple_NN/result/train/acc_epoch100.png')
-plt.show()
+plt.savefig('result/train/acc_epoch100.png')
+# plt.show()
 
 # 評估模型
 loss, accuracy = NN_model.evaluate(X_test, y_test)
@@ -92,4 +92,4 @@ class_probability = np.max(y_pred, axis=1)
 
 # 將預測結果和機率寫入CSV文件(LSTM)
 results_df = pd.DataFrame({'predicted_class': predicted_class, 'class_probability': class_probability})
-results_df.to_csv('Simple_NN/result/test/test_results_epoch100.csv', index=False)
+results_df.to_csv('result/test/test_results_epoch100.csv', index=False)
