@@ -14,25 +14,13 @@ Results and models will export to Simple_NN directory.
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from tensorflow.python.keras import Sequential
 from tensorflow.python.keras.layers import Flatten, Dense
 from matplotlib import pyplot as plt
 
 dataset = pd.read_csv('csi_amplitudes.csv')
-X = dataset.iloc[:, 0:52].values
-y = dataset.iloc[:, 52].values
-
-labelencoder_X_1 = LabelEncoder()
-X[:, 1] = labelencoder_X_1.fit_transform(X[:, 1])
-labelencoder_X_2 = LabelEncoder()
-X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])
-onehotencoder = OneHotEncoder()
-X = onehotencoder.fit_transform(X).toarray()
-X = X[:, 1:]
-
-# X = np.array(X)
-# y = np.array(y)
+X = dataset.iloc[:, 1:53].values
+y = dataset.iloc[:, 53].values
 
 # 分割資料集
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -68,7 +56,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()
 plt.savefig('result/train/Loss_epoch100.png')
-# plt.show()
+plt.show()
 
 # Plot training and validation accuracy over epochs
 plt.plot(history.history['accuracy'], label='training_accuracy')
@@ -77,7 +65,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.savefig('result/train/acc_epoch100.png')
-# plt.show()
+plt.show()
 
 # 評估模型
 loss, accuracy = NN_model.evaluate(X_test, y_test)
