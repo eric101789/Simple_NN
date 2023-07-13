@@ -46,3 +46,23 @@ plt.savefig('result/train/loss.png')
 # plt.savefig('result/train/acc.png')
 # 顯示圖片
 plt.show()
+
+# 舊的程式碼暫放
+# Plot training and validation loss over epochs
+# plt.plot(history.history['loss'], label='training_loss')
+# plt.plot(history.history['val_loss'], label='validation_loss')
+# plt.xlabel('Epoch')
+# plt.ylabel('Loss')
+# plt.legend()
+# plt.savefig('result/train/Loss_epoch100.png')
+# plt.show()
+
+# Plot training and validation accuracy over epochs
+# plt.plot(history.history['accuracy'], label='training_accuracy')
+# plt.plot(history.history['val_accuracy'], label='validation_accuracy')
+# plt.xlabel('Epoch')
+# plt.ylabel('Accuracy')
+# plt.legend()
+# plt.savefig('result/train/acc_epoch100.png')
+# plt.show()
+
