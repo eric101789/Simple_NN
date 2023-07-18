@@ -13,12 +13,11 @@ Results and models will export to Simple_NN_1 directory.
 
 import numpy as np
 import pandas as pd
-from keras import Sequential
+# from keras import Sequential
 from keras_preprocessing.image import load_img, img_to_array
 from matplotlib import pyplot as plt
-# from keras.utils import load_img, img_to_array
 from sklearn.model_selection import train_test_split
-from tensorflow.python.keras.layers import Flatten, Dense
+import tensorflow as tf
 
 df = pd.read_csv('dataset1.csv')
 
@@ -40,23 +39,31 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.0625, random_state=42)
 
 # Initialising the CNN
-classifier = Sequential()
-
-# Step 3 - Flattening
-classifier.add(Flatten(input_shape=(8, 8, 1)))
-
-# Step 4 - Full connection
-classifier.add(Dense(units=128, activation='relu'))
-classifier.add(Dense(units=1, activation='sigmoid'))
-
+classifier = tf.keras.Sequential([
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(units=128, activation='relu'),
+    tf.keras.layers.Dense(units=1, activation='sigmoid')
+])
+# Define Learning Rate
+epoch_size = 100
+initial_learning_rate = 0.001
+decay_steps = epoch_size//4
+decay_rate = 0.96
+lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+    initial_learning_rate=initial_learning_rate,
+    decay_steps=decay_steps,
+    decay_rate=decay_rate,
+    staircase=True
+)
 # Compiling the CNN
-classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
+classifier.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 
 batch_size = 32
 
 history = classifier.fit(X_train,
                          y_train,
-                         epochs=100,
+                         epochs=epoch_size,
                          batch_size=batch_size,
                          steps_per_epoch=7875 // batch_size,
                          validation_data=(X_val, y_val),
