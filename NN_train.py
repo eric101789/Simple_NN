@@ -37,7 +37,7 @@ NN_model = tf.keras.Sequential([
 ])
 
 # Define Learning Rate
-epoch_size = 200
+epoch_size = 400
 initial_learning_rate = 0.001
 decay_steps = epoch_size // 4
 decay_rate = 0.96
@@ -50,11 +50,11 @@ lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
 
 # Compiling the NN
 optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
-# NN_model.compile(optimizer=optimizer, loss='mae', metrics=['accuracy'])
-NN_model.compile(optimizer=optimizer, loss='mse', metrics=['accuracy'])
+NN_model.compile(optimizer=optimizer, loss='mae', metrics=['accuracy'])
+# NN_model.compile(optimizer=optimizer, loss='mse', metrics=['accuracy'])
 # NN_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 
-csv_logger = CSVLogger('result/train/csv/train_epoch200_mse_logs.csv', append=False)
+csv_logger = CSVLogger('result/train/csv/train_epoch400_mae_logs.csv', append=False)
 
 batch_size = 32
 
@@ -68,7 +68,7 @@ NN_model.fit(X_train,
              callbacks=[csv_logger])
 
 NN_model.summary()
-NN_model.save('model/train_model_epoch200_mse')
+NN_model.save('model/train_model_epoch400_mae')
 
 # 評估模型
 loss, accuracy = NN_model.evaluate(X_test, y_test)

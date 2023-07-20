@@ -48,9 +48,9 @@ for epoch_size in range(100, 1100, 100):
 
     # Compiling the NN
     optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
-    NN_model_1.compile(optimizer=optimizer, loss='mae', metrics=['accuracy'])
+    NN_model_1.compile(optimizer=optimizer, loss='mse', metrics=['accuracy'])
 
-    csv_logger = CSVLogger(f'Simple_NN_1/result/train/csv/train_epoch{epoch_size}_mae_logs.csv', append=False)
+    csv_logger = CSVLogger(f'Simple_NN_1/result/train/csv/train_epoch{epoch_size}_mse_logs.csv', append=False)
 
     NN_model_1.fit(X_train,
                    y_train,
@@ -62,7 +62,7 @@ for epoch_size in range(100, 1100, 100):
                    callbacks=[csv_logger])
 
     NN_model_1.summary()
-    NN_model_1.save(f'Simple_NN_1/model/train_model_epoch{epoch_size}_mae')
+    NN_model_1.save(f'Simple_NN_1/model/train_model_epoch{epoch_size}_mse')
 
     # 評估模型
     loss, accuracy = NN_model_1.evaluate(X_test, y_test)
