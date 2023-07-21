@@ -24,6 +24,21 @@ y = np.array(y)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.0625, random_state=42)
 
+# 放大測試集
+X_test_enlarged = []
+enlargement_factors = [1.47, 1.24, 1.09, 1.06, 1.00]
+
+for factor in enlargement_factors:
+    enlarged_images = X_test * factor
+    X_test_enlarged.append(enlarged_images)
+
+# 轉換成NumPy陣列
+X_test_enlarged = np.array(X_test_enlarged)
+
+# 合併放大後的測試集
+X_test_combined = np.concatenate(X_test_enlarged, axis=0)
+y_test_combined = np.tile(y_test, len(enlargement_factors))
+
 # Initialising the CNN
 classifier = Sequential([
     tf.keras.layers.Flatten(),
@@ -32,7 +47,7 @@ classifier = Sequential([
 ])
 
 # Define Learning Rate
-epoch_size = 800
+epoch_size = 100
 initial_learning_rate = 0.001
 decay_steps = epoch_size // 4
 decay_rate = 0.96
@@ -55,24 +70,9 @@ history = classifier.fit(X_train,
                          validation_data=(X_val, y_val),
                          validation_steps=525 // batch_size)
 
-# 放大測試集並合併
-X_test_enlarged = []
-enlargement_factors = [1.47, 1.24, 1.09, 1.06, 1.00]
-
-for factor in enlargement_factors:
-    enlarged_images = X_test * factor
-    X_test_enlarged.append(enlarged_images)
-
-# 轉換成NumPy陣列
-X_test_enlarged = np.array(X_test_enlarged)
-
-# 合併放大後的測試集
-X_test_combined = np.concatenate(X_test_enlarged, axis=0)
-y_test_combined = np.tile(y_test, len(enlargement_factors))
-
 # 在模型中測試合併後的測試集
 loss, accuracy = classifier.evaluate(X_test_combined, y_test_combined)
-print("Test Accuracy on Combined Enlarged Test Set:", accuracy)
+print(f'Test Accuracy on Combined Enlarged Test Set:{accuracy:.4f}')
 
 # 儲存模型
-classifier.save('model/train_model_epoch800_be')
+classifier.save('Simple_NN_1/model/train_model_epoch100_be_enlarge')
